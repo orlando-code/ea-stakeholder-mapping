@@ -65,28 +65,28 @@ This repo fulfils the project component of an EA Project Fellowship with EA Camb
 The following interactive graphs are the headline results of the codebase.
 
 *What are the most-mentioned cause areas?* 
-📈 [Cause area chart](https://orlando-code.github.io/ea-stakeholder-mapping/docs/cause_area_chart.html)
+📈 [Cause area chart](https://orlando-code.github.io/ea-stakeholder-mapping/output/cause_area_chart.html)
 
 *How are those cause areas clustered within the EA framework?*
-🌳 [Cluster treemap](https://orlando-code.github.io/ea-stakeholder-mapping/docs/cluster_treemap.html)
+🌳 [Cluster treemap](https://orlando-code.github.io/ea-stakeholder-mapping/output/cluster_treemap.html)
 
 *How semantically similar are those cause areas?*
-🕸️ [Interactive Semantic Network](https://orlando-code.github.io/ea-stakeholder-mapping/docs/semantic_network.html)
+🕸️ [Interactive Semantic Network](https://orlando-code.github.io/ea-stakeholder-mapping/output/semantic_network.html)
 
 *What are the geographical connections of attendees?*
-🗺️ [Global map of attendee associations](https://orlando-code.github.io/ea-stakeholder-mapping/docs/map.html)
+🗺️ [Global map of attendee associations](https://orlando-code.github.io/ea-stakeholder-mapping/output/map.html)
 
 *Who knows what, and who's interested in what?*
-🧑‍🔬 [Expertise vs interest chart](https://orlando-code.github.io/ea-stakeholder-mapping/docs/expertise_vs_interest_chart.html)
+🧑‍🔬 [Expertise vs interest chart](https://orlando-code.github.io/ea-stakeholder-mapping/output/expertise_vs_interest_chart.html)
 
 *Given this, what are some undervalued areas?*
-💡 [Undervalued cause areas chart](https://orlando-code.github.io/ea-stakeholder-mapping/docs/undervalued_chart.html)
+💡 [Undervalued cause areas chart](https://orlando-code.github.io/ea-stakeholder-mapping/output/undervalued_chart.html)
 
 *How do the NLP and LLM extraction methods compare?*
-🤖 [NLP vs LLM keyword extraction comparison chart](https://orlando-code.github.io/ea-stakeholder-mapping/docs/extraction_comparison_chart.html)
+🤖 [NLP vs LLM keyword extraction comparison chart](https://orlando-code.github.io/ea-stakeholder-mapping/output/extraction_comparison_chart.html)
 
 *How closely-associated are different cause areas?*
-🔥 [Keyword similarity heatmap](https://orlando-code.github.io/ea-stakeholder-mapping/docs/similarity_heatmap.html)
+🔥 [Keyword similarity heatmap](https://orlando-code.github.io/ea-stakeholder-mapping/output/similarity_heatmap.html)
 
 ## Installation
 
