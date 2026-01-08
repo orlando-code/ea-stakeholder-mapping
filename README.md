@@ -2,14 +2,63 @@
 
 This repo fulfils the project component of an EA Project Fellowship with EA Cambridge. It aims to analyze EA conference attendee data: extract entities from biographies, visualize geographic distribution, cluster cause areas semantically, and recommend connections between attendees.
 
-## README Structure
-## Contents
+# Features
+
+- **Entity Extraction**: Extract locations, organizations, and cause areas from attendee biographies
+  - **NLP Method**: Fast, deterministic extraction using spaCy NER and keyword matching
+  - **LLM Method**: Accurate extraction using local Ollama with majority voting
+
+- **Method Comparison**: Compare NLP vs LLM extraction performance (overlap, Jaccard similarity)
+
+- **Geographic Visualization**: Interactive choropleth maps showing attendee distribution by country
+
+- **Semantic Analysis**: Cluster cause areas by semantic similarity using sentence transformers
+  - Network visualization showing cause area relationships
+  - Automatic cluster labeling based on EA cause categories
+  - Option to use predefined categories instead of unsupervised clustering
+
+- **Person Recommendations**: Find connections between attendees based on:
+  - Similar profiles (for collaboration)
+  - Complementary interests (for cross-pollination)
+  - Skill matching (their expertise = your interests)
+  - Wildcards (maximally different profiles)
+
+
+# Results
+
+The following interactive graphs are the headline results of the codebase.
+
+*What are the most-mentioned cause areas?* 
+📈 [Cause area chart](https://orlando-code.github.io/ea-stakeholder-mapping/output/cause_area_chart.html)
+
+*How are those cause areas clustered within the EA framework?*
+🌳 [Cluster treemap](https://orlando-code.github.io/ea-stakeholder-mapping/output/cluster_treemap.html)
+
+*How semantically similar are those cause areas?*
+🕸️ [Interactive Semantic Network](https://orlando-code.github.io/ea-stakeholder-mapping/output/semantic_network.html)
+
+*What are the geographical connections of attendees?*
+🗺️ [Global map of attendee associations](https://orlando-code.github.io/ea-stakeholder-mapping/output/map.html)
+
+*Who knows what, and who's interested in what?*
+🧑‍🔬 [Expertise vs interest chart](https://orlando-code.github.io/ea-stakeholder-mapping/output/expertise_vs_interest_chart.html)
+
+*Given this, what are some undervalued areas?*
+💡 [Undervalued cause areas chart](https://orlando-code.github.io/ea-stakeholder-mapping/output/undervalued_chart.html)
+
+*How do the NLP and LLM extraction methods compare?*
+🤖 [NLP vs LLM keyword extraction comparison chart](https://orlando-code.github.io/ea-stakeholder-mapping/output/extraction_comparison_chart.html)
+
+*How closely-associated are different cause areas?*
+🔥 [Keyword similarity heatmap](https://orlando-code.github.io/ea-stakeholder-mapping/output/similarity_heatmap.html)
+
+
+# Contents
 
 - [EA Stakeholder Mapping](#ea-stakeholder-mapping)
-  - [README Structure](#readme-structure)
-  - [Contents](#contents)
-  - [Features](#features)
-  - [Results](#results)
+- [Features](#features)
+- [Results](#results)
+- [Contents](#contents)
   - [Installation](#installation)
     - [Ollama Setup (for LLM extraction)](#ollama-setup-for-llm-extraction)
   - [Quick Start](#quick-start)
@@ -37,56 +86,6 @@ This repo fulfils the project component of an EA Project Fellowship with EA Camb
     - [General NLP vs LLM](#general-nlp-vs-llm)
     - [Future work](#future-work)
 
-
-## Features
-
-- **Entity Extraction**: Extract locations, organizations, and cause areas from attendee biographies
-  - **NLP Method**: Fast, deterministic extraction using spaCy NER and keyword matching
-  - **LLM Method**: Accurate extraction using local Ollama with majority voting
-
-- **Method Comparison**: Compare NLP vs LLM extraction performance (overlap, Jaccard similarity)
-
-- **Geographic Visualization**: Interactive choropleth maps showing attendee distribution by country
-
-- **Semantic Analysis**: Cluster cause areas by semantic similarity using sentence transformers
-  - Network visualization showing cause area relationships
-  - Automatic cluster labeling based on EA cause categories
-  - Option to use predefined categories instead of unsupervised clustering
-
-- **Person Recommendations**: Find connections between attendees based on:
-  - Similar profiles (for collaboration)
-  - Complementary interests (for cross-pollination)
-  - Skill matching (their expertise = your interests)
-  - Wildcards (maximally different profiles)
-
-
-## Results
-
-The following interactive graphs are the headline results of the codebase.
-
-*What are the most-mentioned cause areas?* 
-📈 [Cause area chart](https://orlando-code.github.io/ea-stakeholder-mapping/output/cause_area_chart.html)
-
-*How are those cause areas clustered within the EA framework?*
-🌳 [Cluster treemap](https://orlando-code.github.io/ea-stakeholder-mapping/output/cluster_treemap.html)
-
-*How semantically similar are those cause areas?*
-🕸️ [Interactive Semantic Network](https://orlando-code.github.io/ea-stakeholder-mapping/output/semantic_network.html)
-
-*What are the geographical connections of attendees?*
-🗺️ [Global map of attendee associations](https://orlando-code.github.io/ea-stakeholder-mapping/output/map.html)
-
-*Who knows what, and who's interested in what?*
-🧑‍🔬 [Expertise vs interest chart](https://orlando-code.github.io/ea-stakeholder-mapping/output/expertise_vs_interest_chart.html)
-
-*Given this, what are some undervalued areas?*
-💡 [Undervalued cause areas chart](https://orlando-code.github.io/ea-stakeholder-mapping/output/undervalued_chart.html)
-
-*How do the NLP and LLM extraction methods compare?*
-🤖 [NLP vs LLM keyword extraction comparison chart](https://orlando-code.github.io/ea-stakeholder-mapping/output/extraction_comparison_chart.html)
-
-*How closely-associated are different cause areas?*
-🔥 [Keyword similarity heatmap](https://orlando-code.github.io/ea-stakeholder-mapping/output/similarity_heatmap.html)
 
 ## Installation
 
