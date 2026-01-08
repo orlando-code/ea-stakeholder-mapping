@@ -9,6 +9,7 @@ This repo fulfils the project component of an EA Project Fellowship with EA Camb
   - [README Structure](#readme-structure)
   - [Contents](#contents)
   - [Features](#features)
+  - [Results](#results)
   - [Installation](#installation)
     - [Ollama Setup (for LLM extraction)](#ollama-setup-for-llm-extraction)
   - [Quick Start](#quick-start)
@@ -37,7 +38,6 @@ This repo fulfils the project component of an EA Project Fellowship with EA Camb
     - [Future work](#future-work)
 
 
-
 ## Features
 
 - **Entity Extraction**: Extract locations, organizations, and cause areas from attendee biographies
@@ -58,6 +58,20 @@ This repo fulfils the project component of an EA Project Fellowship with EA Camb
   - Complementary interests (for cross-pollination)
   - Skill matching (their expertise = your interests)
   - Wildcards (maximally different profiles)
+
+
+## Results
+
+The following interactive graphs are the results of the codebase which is detailed below:
+
+📊 [Cluster treemap](https://orlando-code.github.io/ea-stakeholder-mapping/cluster_treemap.html)
+📊 [Cause area chart](https://orlando-code.github.io/ea-stakeholder-mapping/cause_area_chart.html)
+📊 [Interactive Semantic Network](https://orlando-code.github.io/ea-stakeholder-mapping/semantic_network.html)
+📊 [Global map of attendee associations](https://orlando-code.github.io/ea-stakeholder-mapping/map.html)
+📊 [Expertise vs interest chart](https://orlando-code.github.io/ea-stakeholder-mapping/expertise_vs_interest_chart.html)
+📊 [Undervalued cause areas chart](https://orlando-code.github.io/ea-stakeholder-mapping/undervalued_chart.html)
+📊 [NLP vs LLM keyword extraction comparison chart](https://orlando-code.github.io/ea-stakeholder-mapping/extraction_comparison_chart.html)
+📊 [Keyword similarity heatmap](https://orlando-code.github.io/ea-stakeholder-mapping/similarity_heatmap.html)
 
 ## Installation
 
