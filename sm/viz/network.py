@@ -253,9 +253,8 @@ def create_similarity_heatmap(
     fig.update_layout(
         title=dict(text=title, x=0.5),
         xaxis_tickangle=-45,
-        height=700,
-        width=800,
-        margin=dict(l=150, b=150),
+        autosize=True,
+        margin=dict(l=0, b=0, t=0, r=0),
     )
 
     return fig

@@ -111,7 +111,6 @@ def create_interactive_map(
     country_df: pd.DataFrame,
     organization_df: Optional[pd.DataFrame] = None,
     title: str = "Geographic Distribution of Attendees",
-    height: int = 400,
 ) -> go.Figure:
     """Create interactive map with choropleth and organization markers.
 
@@ -209,7 +208,8 @@ def create_interactive_map(
             oceancolor="rgb(230, 245, 255)",
             showframe=False,
         ),
-        height=height,
+        autosize=True,
+        margin=dict(l=0, r=0, t=0, b=0),
         legend=dict(
             x=0.92,
             y=-0.2,
