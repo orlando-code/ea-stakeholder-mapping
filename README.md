@@ -356,15 +356,23 @@ sm/
 
 ## Configuration
 
-Create a `config.yaml` file in the project root for API credentials:
+Create a `config.yaml` file from the provided template:
+
+```bash
+cp config.yaml.example config.yaml
+```
+
+Then edit `config.yaml` with your API credentials:
 
 ```yaml
-geonames:
-  username: your_username
-
 google_maps:
-  api_key: your_api_key  # Optional, for enhanced geocoding
+  api_key: "YOUR_GOOGLE_MAPS_API_KEY"  # For organization geocoding
+
+geonames:
+  username: "your_geonames_username"   # For country geocoding
 ```
+
+> ⚠️ **Never commit `config.yaml`** - it contains secrets and is gitignored.
 
 ## Development
 
