@@ -64,21 +64,22 @@ This repo fulfils the project component of an EA Project Fellowship with EA Camb
 
 The following interactive graphs are the headline results of the codebase.
 
-📊 [Cluster treemap](https://orlando-code.github.io/ea-stakeholder-mapping/cluster_treemap.html)
 
-📊 [Cause area chart](https://orlando-code.github.io/ea-stakeholder-mapping/cause_area_chart.html)
+🌳 [Cluster treemap](https://orlando-code.github.io/ea-stakeholder-mapping/docs/cluster_treemap.html)
 
-📊 [Interactive Semantic Network](https://orlando-code.github.io/ea-stakeholder-mapping/semantic_network.html)
+📈 [Cause area chart](https://orlando-code.github.io/ea-stakeholder-mapping/docs/cause_area_chart.html)
 
-📊 [Global map of attendee associations](https://orlando-code.github.io/ea-stakeholder-mapping/map.html)
+🕸️ [Interactive Semantic Network](https://orlando-code.github.io/ea-stakeholder-mapping/docs/semantic_network.html)
 
-📊 [Expertise vs interest chart](https://orlando-code.github.io/ea-stakeholder-mapping/expertise_vs_interest_chart.html)
+🗺️ [Global map of attendee associations](https://orlando-code.github.io/ea-stakeholder-mapping/docs/map.html)
 
-📊 [Undervalued cause areas chart](https://orlando-code.github.io/ea-stakeholder-mapping/undervalued_chart.html)
+🧑‍🔬 [Expertise vs interest chart](https://orlando-code.github.io/ea-stakeholder-mapping/docs/expertise_vs_interest_chart.html)
 
-📊 [NLP vs LLM keyword extraction comparison chart](https://orlando-code.github.io/ea-stakeholder-mapping/extraction_comparison_chart.html)
+💡 [Undervalued cause areas chart](https://orlando-code.github.io/ea-stakeholder-mapping/docs/undervalued_chart.html)
 
-📊 [Keyword similarity heatmap](https://orlando-code.github.io/ea-stakeholder-mapping/similarity_heatmap.html)
+🤖 [NLP vs LLM keyword extraction comparison chart](https://orlando-code.github.io/ea-stakeholder-mapping/docs/extraction_comparison_chart.html)
+
+🔥 [Keyword similarity heatmap](https://orlando-code.github.io/ea-stakeholder-mapping/docs/similarity_heatmap.html)
 
 ## Installation
 
