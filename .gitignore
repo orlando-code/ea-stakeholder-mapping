@@ -1,3 +1,8 @@
+# Secrets - NEVER commit these
+config.yaml
+.env
+*.secret
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
