@@ -144,8 +144,8 @@ def create_semantic_network(
             showticklabels=False,
             title="",
         ),
-        height=700,
-        width=1000,
+        autosize=True,
+        margin=dict(l=0, b=0, t=50, r=0),
         plot_bgcolor="rgba(245,245,245,0.5)",
     )
 
@@ -205,8 +205,8 @@ def create_cluster_treemap(
 
     fig.update_layout(
         title=dict(text=title, x=0.5),
-        height=600,
-        margin=dict(t=50, l=25, r=25, b=25),
+        autosize=True,
+        margin=dict(l=0, b=0, t=50, r=0),
     )
 
     return fig
@@ -254,7 +254,7 @@ def create_similarity_heatmap(
         title=dict(text=title, x=0.5),
         xaxis_tickangle=-45,
         autosize=True,
-        margin=dict(l=0, b=0, t=0, r=0),
+        margin=dict(l=0, b=0, t=50, r=0),
     )
 
     return fig
