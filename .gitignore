@@ -209,6 +209,7 @@ __marimo__/
 
 # ignore data dir
 data/
+.cursor/
 
 .DS_Store
 .cursor
