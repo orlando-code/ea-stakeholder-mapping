@@ -6,7 +6,7 @@ This package provides tools for analyzing EA conference attendee data:
    - NLP: spaCy-based extraction (fast, deterministic)
    - LLM: Ollama-based extraction with majority voting (accurate, handles nuance)
 
-2. **Analysis**: 
+2. **Analysis**:
    - Geographic distribution by country and organization
    - Semantic clustering of cause areas by similarity
 
@@ -17,16 +17,16 @@ This package provides tools for analyzing EA conference attendee data:
 
 Quick Start:
     from sm import Pipeline
-    
+
     # Create and run pipeline
     pipe = Pipeline(methods=["nlp", "llm"])
     pipe.load_data("data/attendees.csv")
     pipe.extract(text_columns=["biography", "help_me"])
-    
+
     # Compare extraction methods
     comparison = pipe.compare_methods()
     print(comparison.summary())
-    
+
     # Analyze and visualize
     pipe.analyze_semantic()
     fig = pipe.create_semantic_network()
@@ -34,11 +34,11 @@ Quick Start:
 
 Alternative (manual) usage:
     from sm.extractors import NLPExtractor, LLMExtractor
-    
+
     # NLP extraction
     nlp = NLPExtractor()
     result = nlp.extract_all("I work on AI safety at Oxford University")
-    
+
     # LLM extraction with voting
     llm = LLMExtractor(n_runs=3)
     result = llm.extract_all("I work on AI safety at Oxford University")
@@ -48,17 +48,6 @@ __version__ = "0.3.0"
 
 # Core modules
 from sm import analysis, cache, config, data, extractors, viz
-from sm.pipeline import Pipeline, PipelineResults
-
-# Extractors
-from sm.extractors import (
-    ExtractionResult,
-    ExtractorComparator,
-    LLMExtractor,
-    NLPExtractor,
-    check_ollama_available,
-    parse_semicolon_keywords,
-)
 
 # Analysis
 from sm.analysis import (
@@ -69,12 +58,8 @@ from sm.analysis import (
     prepare_geographic_data,
 )
 
-# Visualization
-from sm.viz import (
-    create_cause_area_bar_chart,
-    create_interactive_map,
-    create_semantic_network,
-)
+# Cache utilities
+from sm.cache import clear_cache, get_cache_stats
 
 # Data loading
 from sm.data import (
@@ -83,8 +68,23 @@ from sm.data import (
     load_attendee_data,
 )
 
-# Cache utilities
-from sm.cache import clear_cache, get_cache_stats
+# Extractors
+from sm.extractors import (
+    ExtractionResult,
+    ExtractorComparator,
+    LLMExtractor,
+    NLPExtractor,
+    check_ollama_available,
+    parse_semicolon_keywords,
+)
+from sm.pipeline import Pipeline, PipelineResults
+
+# Visualization
+from sm.viz import (
+    create_cause_area_bar_chart,
+    create_interactive_map,
+    create_semantic_network,
+)
 
 __all__ = [
     # Version
