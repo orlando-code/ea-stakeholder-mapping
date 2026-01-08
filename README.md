@@ -62,15 +62,22 @@ This repo fulfils the project component of an EA Project Fellowship with EA Camb
 
 ## Results
 
-The following interactive graphs are the results of the codebase which is detailed below:
+The following interactive graphs are the headline results of the codebase.
 
 📊 [Cluster treemap](https://orlando-code.github.io/ea-stakeholder-mapping/cluster_treemap.html)
+
 📊 [Cause area chart](https://orlando-code.github.io/ea-stakeholder-mapping/cause_area_chart.html)
+
 📊 [Interactive Semantic Network](https://orlando-code.github.io/ea-stakeholder-mapping/semantic_network.html)
+
 📊 [Global map of attendee associations](https://orlando-code.github.io/ea-stakeholder-mapping/map.html)
+
 📊 [Expertise vs interest chart](https://orlando-code.github.io/ea-stakeholder-mapping/expertise_vs_interest_chart.html)
+
 📊 [Undervalued cause areas chart](https://orlando-code.github.io/ea-stakeholder-mapping/undervalued_chart.html)
+
 📊 [NLP vs LLM keyword extraction comparison chart](https://orlando-code.github.io/ea-stakeholder-mapping/extraction_comparison_chart.html)
+
 📊 [Keyword similarity heatmap](https://orlando-code.github.io/ea-stakeholder-mapping/similarity_heatmap.html)
 
 ## Installation
