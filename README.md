@@ -490,4 +490,6 @@ This is a real pain! The goal was to provide latitude/longitude coordinate pairs
 - Verify the accuracy of LLM-extracted keywords by manually checking against original data (e.g. for a sample of paragraphs).
 - More recent/powerful LLMs (see [LLM Majority Voting](#LLM-Majority-Voting)
 - Extend analysis to a inter-conference change detection! See how attendance and focus changes between different EA conferences
+- Ask specific questions: to what extent is EA conference attendance dominated by people interested in AI? How is this changing with time?
+
 
