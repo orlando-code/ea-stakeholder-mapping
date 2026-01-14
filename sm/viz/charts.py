@@ -313,6 +313,33 @@ def create_undervalued_chart(
         )
     )
 
+    # add annotation text stating that numbers printed on the bars are the total number of mentions (between expertise and interest)
+    # fig.update_layout(
+    #     title=dict(
+    #         text="Undervalued Areas (Interest/Expertise Ratio > 1)",
+    #         x=0.5,
+    #         xanchor="center",
+    #         yanchor="top",
+    #         font=dict(size=20),
+    #         # subtitle is set below
+    #     ),
+    #     xaxis_title="Interest/Expertise Ratio",
+    #     yaxis_title="",
+    #     height=max(400, top_n * 25),
+    #     margin=dict(l=200, pad=10),
+    #     xaxis=dict(rangemode="tozero"),
+    #     legend=dict(x=0.64, y=0.02),
+    #     # Add subtitle
+    #     titlefont=dict(size=20),
+    # )
+    # fig.update_layout(
+    #     title={
+    #         "text": "Undervalued Areas (Interest/Expertise Ratio > 1)<br><span style='font-size:14px;font-weight:normal'>Numbers printed on the bars are the total number of mentions (between expertise and interest)</span>",
+    #         "x": 0.5,
+    #         "xanchor": "center",
+    #     }
+    # )
+
     fig.add_vline(
         x=median_ratio,
         line_dash="dash",
@@ -342,7 +369,11 @@ def create_undervalued_chart(
     )
 
     fig.update_layout(
-        title="Undervalued Areas (Interest/Expertise Ratio > 1)",
+        title=dict(
+            text="Undervalued Areas (Interest/Expertise Ratio > 1)<br><span style='font-size:14px;font-weight:normal'>Numbers printed on the bars are the total number of mentions (between expertise and interest)</span>",
+            x=0.5,
+            xanchor="center",
+        ),
         xaxis_title="Interest/Expertise Ratio",
         yaxis_title="",
         height=max(400, top_n * 25),
@@ -350,4 +381,5 @@ def create_undervalued_chart(
         xaxis=dict(rangemode="tozero"),
         legend=dict(x=0.64, y=0.02),
     )
+
     return fig
