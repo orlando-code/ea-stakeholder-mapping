@@ -487,9 +487,4 @@ This is a real pain! The goal was to provide latitude/longitude coordinate pairs
 - Making this whole thing more accessible via a web-app
 - Analysing the databases from past/future conferences to look for (statistically-significant) shifts in interests, expertise, and general focus areas
 - Perhaps improving assignment of organisations' locations e.g. via a look-up table. This would be pretty time-consuming to verify and automation would branch into the realms of web-searches...
-- Verify the accuracy of LLM-extracted keywords by manually checking against original data (e.g. for a sample of paragraphs).
-- More recent/powerful LLMs (see [LLM Majority Voting](#LLM-Majority-Voting)
-- Extend analysis to a inter-conference change detection! See how attendance and focus changes between different EA conferences
-- Ask specific questions: to what extent is EA conference attendance dominated by people interested in AI? How is this changing with time?
-
 
