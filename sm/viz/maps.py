@@ -111,6 +111,7 @@ def create_interactive_map(
     country_df: pd.DataFrame,
     organization_df: Optional[pd.DataFrame] = None,
     title: str = "Geographic Distribution of Attendees",
+    showtitle: bool = True,
 ) -> go.Figure:
     """Create interactive map with choropleth and organization markers.
 
@@ -196,7 +197,7 @@ def create_interactive_map(
     )
 
     fig.update_layout(
-        title=dict(text=title, x=0.5),
+        title=dict(text=title, x=0.5) if showtitle else "",
         geo=dict(
             projection_type="natural earth",
             showland=True,

@@ -34,6 +34,8 @@ from sm.analysis.semantic import (
     SemanticAnalysisResult,
     SemanticAnalyzer,
     aggregate_cause_areas,
+    normalize_cause_area,
+    normalize_cause_areas_fuzzy,
 )
 
 __all__ = [
@@ -50,6 +52,8 @@ __all__ = [
     "SemanticAnalysisResult",
     "CauseAreaCluster",
     "aggregate_cause_areas",
+    "normalize_cause_area",
+    "normalize_cause_areas_fuzzy",
     # Recommender
     "PersonRecommender",
     "PersonRecommendations",

@@ -27,6 +27,8 @@ CLUSTER_COLORS = [
     "#FF006E",  # Magenta
     "#06D6A0",  # Teal
     "#EF476F",  # Red
+    "#faefaf",  # pale yellow
+    "#aefaea",  # light blue
 ]
 
 
@@ -37,6 +39,7 @@ def create_semantic_network(
     min_node_size: float = 8,
     title: str = "Cause Area Semantic Landscape",
     show_labels: bool = True,
+    showtitle: bool = True,
 ) -> go.Figure:
     """Create 2D semantic network visualization.
 
@@ -124,7 +127,7 @@ def create_semantic_network(
         )
 
     fig.update_layout(
-        title=dict(text=title, x=0.5, font=dict(size=16)),
+        title=dict(text=title, x=0.5, font=dict(size=16)) if showtitle else "",
         showlegend=True,
         legend=dict(
             title="Clusters",

@@ -330,6 +330,7 @@ class Pipeline:
         use_predefined_categories: bool = False,
         similarity_threshold: float = 0.3,
         min_category_size: int = 1,
+        normalize_terms: bool = False,
     ):
         """Analyze semantic similarity of cause areas.
 
@@ -347,6 +348,9 @@ class Pipeline:
             min_category_size: When using predefined categories, minimum number of members
                 per category. Categories with fewer members will have their items
                 reassigned to the next-closest category that meets the size threshold.
+            normalize_terms: If True, normalize similar terms together (e.g., group
+                "ai alignment", "ai safety" → "AI Safety & Governance") before counting.
+                This helps merge variants of the same concept.
         Returns:
             SemanticAnalysisResult
         """
@@ -391,15 +395,45 @@ class Pipeline:
             print("Warning: No cause areas found for semantic analysis")
             return None
 
-        # Normalize and count
+        # Normalize
         all_causes = [c.lower().strip() for c in all_causes if c]
-        cause_counts = dict(Counter(all_causes))
-        unique_causes = [c for c, count in cause_counts.items() if count >= min_mentions]
+
+        # Count before normalization
+        raw_counts = dict(Counter(all_causes))
+        raw_unique = sorted(raw_counts.keys(), key=lambda x: raw_counts.get(x, 0), reverse=True)
+
+        # Apply fuzzy normalization if requested (groups similar terms together)
+        if normalize_terms:
+            from sm.analysis.semantic import normalize_cause_areas_fuzzy
+
+            # Use fuzzy matching to group variants
+            normalized_areas, normalized_counts = normalize_cause_areas_fuzzy(
+                raw_unique,
+                raw_counts,
+                min_similarity=0.5,  # 50% token overlap to group
+                min_mentions_for_canonical=2,  # Terms with 2+ mentions can be canonical
+            )
+
+            cause_counts = normalized_counts
+            unique_causes = sorted(
+                [c for c, count in normalized_counts.items() if count >= min_mentions],
+                key=lambda x: normalized_counts.get(x, 0),
+                reverse=True,
+            )
+        else:
+            cause_counts = raw_counts
+            unique_causes = sorted(
+                [c for c, count in raw_counts.items() if count >= min_mentions],
+                key=lambda x: raw_counts.get(x, 0),
+                reverse=True,
+            )
 
         mention_str = "mentions" if min_mentions != 1 else "mention"
         print(
             f"Found {len(unique_causes)} unique cause areas (minimum {min_mentions} {mention_str})"
         )
+        if normalize_terms:
+            print("  (with term normalization applied - similar terms grouped together)")
 
         # Run semantic analysis
         analyzer = SemanticAnalyzer(n_clusters=n_clusters)
@@ -423,7 +457,7 @@ class Pipeline:
     # Visualization
     # =========================================================================
 
-    def create_map(self, show_organizations: bool = True):
+    def create_map(self, show_organizations: bool = True, showtitle: bool = True):
         """Create geographic distribution map.
 
         Args:
@@ -441,9 +475,10 @@ class Pipeline:
         return create_interactive_map(
             self.results.country_counts,
             org_df if org_df is not None else pd.DataFrame(),
+            showtitle=showtitle,
         )
 
-    def create_cause_area_chart(self, top_n: int = 25):
+    def create_cause_area_chart(self, top_n: int = 25, showtitle: bool = True):
         """Create cause area bar chart.
 
         Args:
@@ -460,9 +495,10 @@ class Pipeline:
             self.results.cause_areas,
             self.results.cause_area_counts,
             top_n=top_n,
+            showtitle=showtitle,
         )
 
-    def create_semantic_network(self, min_mentions: int = 2):
+    def create_semantic_network(self, min_mentions: int = 2, showtitle: bool = True):
         """Create semantic network visualization.
 
         Args:
@@ -478,9 +514,10 @@ class Pipeline:
         return create_semantic_network(
             self.results.semantic_result,
             min_mentions=min_mentions,
+            showtitle=showtitle,
         )
 
-    def create_comparison_chart(self):
+    def create_comparison_chart(self, showtitle: bool = True):
         """Create extraction method comparison chart.
 
         Returns:
@@ -491,9 +528,11 @@ class Pipeline:
         if self.results.comparison is None:
             raise ValueError("Run compare_methods() first")
 
-        return create_extraction_comparison_chart(self.results.comparison.to_dataframe())
+        return create_extraction_comparison_chart(
+            self.results.comparison.to_dataframe(), showtitle=showtitle
+        )
 
-    def create_expertise_vs_interest_chart(self, top_n: int = 25):
+    def create_expertise_vs_interest_chart(self, top_n: int = 25, showtitle: bool = True):
         """Create expertise vs interest chart.
 
         Returns:
@@ -501,9 +540,9 @@ class Pipeline:
         """
         from sm.viz.charts import create_expertise_vs_interest_chart
 
-        return create_expertise_vs_interest_chart(self.df, top_n=top_n)
+        return create_expertise_vs_interest_chart(self.df, top_n=top_n, showtitle=showtitle)
 
-    def create_undervalued_chart(self, top_n: int = 25):
+    def create_undervalued_chart(self, top_n: int = 25, showtitle: bool = True):
         """Create expertise interest comparison chart.
 
         Returns:
@@ -514,7 +553,7 @@ class Pipeline:
         if self.results.semantic_result is None:
             raise ValueError("Run analyze_semantic() first")
 
-        return create_undervalued_chart(self.df, top_n=top_n)
+        return create_undervalued_chart(self.df, top_n=top_n, showtitle=showtitle)
 
     # =========================================================================
     # Person Recommendations

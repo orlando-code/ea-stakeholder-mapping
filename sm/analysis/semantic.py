@@ -568,10 +568,180 @@ class SemanticAnalyzer:
 # =============================================================================
 
 
+def _token_similarity(term1: str, term2: str) -> float:
+    """Calculate token-based similarity between two terms.
+    
+    Returns a score between 0 and 1 based on shared tokens.
+    """
+    tokens1 = set(term1.lower().split())
+    tokens2 = set(term2.lower().split())
+    
+    if not tokens1 or not tokens2:
+        return 0.0
+    
+    # Jaccard similarity on tokens
+    intersection = tokens1 & tokens2
+    union = tokens1 | tokens2
+    
+    if not union:
+        return 0.0
+    
+    return len(intersection) / len(union)
+
+
+def _is_variant_of(term: str, canonical: str, min_similarity: float = 0.5) -> bool:
+    """Check if term is a variant of canonical term.
+    
+    Uses multiple heuristics:
+    1. Substring matching (one contains the other)
+    2. Token-based similarity (Jaccard on word tokens)
+    3. Shared core phrases (2+ consecutive words)
+    4. Levenshtein-like distance for very similar strings
+    
+    Args:
+        term: Term to check
+        canonical: Canonical term to compare against
+        min_similarity: Minimum token similarity threshold
+    Returns:
+        True if term appears to be a variant
+    """
+    term_lower = term.lower().strip()
+    canonical_lower = canonical.lower().strip()
+    
+    # Skip if identical (after normalization)
+    if term_lower == canonical_lower:
+        return True
+    
+    # Exact substring match (one contains the other, but not too short)
+    # This catches: "ai alignment" and "ai alignment research"
+    if len(term_lower) >= 5 and len(canonical_lower) >= 5:
+        if term_lower in canonical_lower or canonical_lower in term_lower:
+            return True
+    
+    # Token-based similarity
+    similarity = _token_similarity(term, canonical)
+    if similarity >= min_similarity:
+        return True
+    
+    # Check if they share a significant core phrase (2+ consecutive words)
+    term_tokens = term_lower.split()
+    canonical_tokens = canonical_lower.split()
+    
+    # Find common 2-word phrases
+    if len(term_tokens) >= 2 and len(canonical_tokens) >= 2:
+        term_bigrams = set(tuple(term_tokens[i:i+2]) for i in range(len(term_tokens) - 1))
+        canonical_bigrams = set(tuple(canonical_tokens[i:i+2]) for i in range(len(canonical_tokens) - 1))
+        
+        if term_bigrams & canonical_bigrams:  # Any overlap
+            return True
+    
+    # Check for single-word overlap on important terms (3+ chars)
+    # This helps catch: "ai safety" and "technical ai safety"
+    important_terms = {t for t in term_tokens if len(t) >= 3}
+    important_canonical = {t for t in canonical_tokens if len(t) >= 3}
+    
+    if important_terms and important_canonical:
+        overlap = important_terms & important_canonical
+        # If they share at least 2 important words, likely variants
+        if len(overlap) >= 2:
+            return True
+        # Or if one important word appears and similarity is decent
+        if len(overlap) >= 1 and similarity >= 0.3:
+            return True
+    
+    return False
+
+
+def normalize_cause_areas_fuzzy(
+    cause_areas: list[str],
+    mention_counts: dict[str, int],
+    min_similarity: float = 0.5,
+    min_mentions_for_canonical: int = 2,
+) -> tuple[list[str], dict[str, int]]:
+    """Normalize cause areas using fuzzy matching to group variants.
+    
+    Groups similar terms together by finding canonical forms. Terms are grouped
+    if they share significant token overlap or one is a substring of the other.
+    Processes terms in frequency order so common terms become canonicals.
+    
+    Args:
+        cause_areas: List of cause area strings
+        mention_counts: Dict mapping cause area to mention count
+        min_similarity: Minimum token similarity to group terms (0.0-1.0)
+        min_mentions_for_canonical: Minimum mentions for a term to be considered canonical
+    Returns:
+        Tuple of (normalized cause areas list, normalized mention counts dict)
+    """
+    if not cause_areas:
+        return [], {}
+    
+    # Sort by frequency (most common first) - these become canonical candidates
+    sorted_areas = sorted(
+        cause_areas,
+        key=lambda x: mention_counts.get(x, 0),
+        reverse=True,
+    )
+    
+    # Map: original_term -> normalized_name (canonical form)
+    term_to_normalized: dict[str, str] = {}
+    # Set of canonical forms we've established
+    canonicals: set[str] = set()
+    
+    for term in sorted_areas:
+        term_count = mention_counts.get(term, 0)
+        normalized = None
+        
+        # Check if this term is a variant of an existing canonical
+        # (only check against canonicals we've already established)
+        for canonical in canonicals:
+            if _is_variant_of(term, canonical, min_similarity):
+                normalized = canonical
+                break
+        
+        # If not a variant, this term becomes a new canonical
+        if normalized is None:
+            # Use this term as canonical if it has enough mentions
+            # OR if it's the first term (to ensure we always have at least one)
+            if term_count >= min_mentions_for_canonical or not canonicals:
+                normalized = term
+                canonicals.add(normalized)
+            else:
+                # Low-frequency term with no similar canonical - keep as-is (its own canonical)
+                normalized = term
+                canonicals.add(normalized)
+        
+        term_to_normalized[term] = normalized
+    
+    # Build normalized counts by summing counts of all variants
+    normalized_counts: dict[str, int] = {}
+    for original, count in mention_counts.items():
+        normalized = term_to_normalized.get(original, original)
+        normalized_counts[normalized] = normalized_counts.get(normalized, 0) + count
+    
+    # Return sorted list
+    normalized_areas = sorted(
+        normalized_counts.keys(),
+        key=lambda x: normalized_counts.get(x, 0),
+        reverse=True,
+    )
+    
+    return normalized_areas, normalized_counts
+
+
+def normalize_cause_area(area: str) -> str:
+    """Normalize a single cause area (legacy function - use normalize_cause_areas_fuzzy for batch).
+    
+    This is a simple pass-through that just capitalizes. For proper fuzzy normalization,
+    use normalize_cause_areas_fuzzy() which processes all terms together.
+    """
+    return area.strip().title()
+
+
 def aggregate_cause_areas(
     df: pd.DataFrame,
     cause_area_columns: Optional[list[str]] = None,
     min_mentions: int = 1,
+    normalize: bool = False,
 ) -> tuple[list[str], dict[str, int]]:
     """Aggregate cause areas from DataFrame columns.
 
@@ -579,6 +749,7 @@ def aggregate_cause_areas(
         df: DataFrame with cause area columns (containing lists)
         cause_area_columns: Columns to aggregate from
         min_mentions: Minimum mentions to include
+        normalize: If True, normalize similar terms together (e.g., group AI variants)
     Returns:
         Tuple of (list of cause areas, dict of mention counts)
     """
@@ -604,6 +775,10 @@ def aggregate_cause_areas(
 
     # Normalize
     all_areas = [a.lower().strip() for a in all_areas if a]
+    
+    # Apply normalization if requested
+    if normalize:
+        all_areas = [normalize_cause_area(a) for a in all_areas]
 
     # Count mentions
     mention_counts = dict(Counter(all_areas))

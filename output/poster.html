@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EA Stakeholder Mapping - Interactive Poster</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0D1B2A;
+            --secondary: #1B263B;
+            --accent: #E07A5F;
+            --accent2: #3D5A80;
+            --highlight: #81B29A;
+            --text: #F4F3EE;
+            --text-muted: #B8B8B8;
+            --card-bg: rgba(27, 38, 59, 0.95);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 14px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, #0D1B2A 100%);
+            color: var(--text);
+            height: 100vh;
+            padding: 30px;
+            overflow: hidden;
+            margin: 0;
+        }
+
+        .poster {
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 280px 1fr 1000px;
+            grid-template-rows: auto 1fr auto;
+            gap: 20px;
+            overflow: hidden;
+        }
+
+        /* Header Section */
+        .header {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 30px 20px;
+            background: linear-gradient(90deg, var(--accent) 0%, var(--accent2) 100%);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+
+        .header h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+            position: relative;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            opacity: 0.95;
+            position: relative;
+        }
+
+        .header .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-top: 12px;
+            position: relative;
+        }
+
+        .header .author {
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            text-align: right;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            z-index: 1;
+        }
+
+        .header .author-name {
+            font-weight: 600;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.4rem;
+        }
+
+        .header .author-email {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .header .author-email a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .header .author-email a:hover {
+            text-decoration: underline;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .card h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: var(--text-muted);
+        }
+
+        /* Chart containers */
+        .chart-card {
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .chart-container {
+            flex: 1;
+            min-height: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.2);
+            transform-origin: top left;
+            overflow: hidden;
+        }
+
+        /* Ensure iframe content scales */
+        .chart-frame[src] {
+            display: block;
+        }
+
+        /* Sidebar Layout */
+        .left-sidebar {
+            grid-column: 1;
+            grid-row: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow: hidden;
+            min-height: 0;
+            max-height: 100%;
+        }
+
+        .center-charts {
+            grid-column: 2;
+            grid-row: 2;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 20px;
+            min-height: 0;
+        }
+
+        .right-sidebar {
+            grid-column: 3;
+            grid-row: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow: hidden;
+            min-height: 0;
+            max-height: 100%;
+        }
+
+        /* Sidebar cards - elements with BOTH .card and .sidebar-card classes */
+        .card.sidebar-card {
+            flex: 1 1 0;
+            min-height: 0;
+            max-height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* Custom scrollbar for sidebar cards */
+        .card.sidebar-card::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .card.sidebar-card::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+        }
+
+        .card.sidebar-card::-webkit-scrollbar-thumb {
+            background: var(--accent2);
+            border-radius: 4px;
+        }
+
+        .card.sidebar-card::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+
+        /* Pipeline Diagram */
+        .pipeline-diagram {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 10px 0;
+        }
+
+        .pipeline-step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .step-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .step-icon.data { background: linear-gradient(135deg, #4ECDC4, #44A08D); }
+        .step-icon.extract { background: linear-gradient(135deg, #667EEA, #764BA2); }
+        .step-icon.analyze { background: linear-gradient(135deg, #F093FB, #F5576C); }
+        .step-icon.viz { background: linear-gradient(135deg, #4FACFE, #00F2FE); }
+        .step-icon.recommend { background: linear-gradient(135deg, #FA709A, #FEE140); }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .step-content p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .step-arrow {
+            text-align: center;
+            color: var(--accent);
+            font-size: 1rem;
+            margin-left: 13px;
+        }
+
+        /* QR Section */
+        .qr-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .qr-placeholder {
+            width: 140px;
+            height: 140px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+        }
+
+        .qr-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .qr-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        /* Key Findings */
+        .finding-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+            align-items: flex-start;
+        }
+
+        .finding-number {
+            width: 28px;
+            height: 28px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .finding-text {
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .finding-text strong {
+            color: var(--highlight);
+        }
+
+        /* Methods */
+        .method-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .method-box {
+            background: rgba(0,0,0,0.2);
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 3px solid;
+        }
+
+        .method-box.nlp { border-color: #4FACFE; }
+        .method-box.llm { border-color: #FA709A; }
+
+        .method-box h4 {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .method-box p {
+            font-size: 0.8rem;
+        }
+
+        /* Header and Footer - Full Width */
+        .header {
+            grid-column: 1 / -1;
+            grid-row: 1;
+        }
+
+        .footer {
+            grid-column: 1 / -1;
+            grid-row: 3;
+            text-align: center;
+            padding: 8px 15px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            line-height: 1.3;
+        }
+
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* Chart cards in center grid */
+        .chart-card h2 {
+            margin-bottom: 8px;
+            flex-shrink: 0;
+        }
+
+        .chart-card p {
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        /* Responsive for print/large display */
+        @media print, (min-width: 1600px) {
+            html { font-size: 16px; }
+            .poster { 
+                grid-template-columns: 320px 1fr 320px;
+                gap: 25px;
+            }
+            .chart-frame { min-height: 350px; }
+            .chart-frame.tall { min-height: 420px; }
+        }
+
+        @media (max-width: 1200px) {
+            .poster {
+                grid-template-columns: 1fr;
+            }
+            .left-sidebar, .center-charts, .right-sidebar {
+                grid-column: 1;
+            }
+            .center-charts {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Loading animation for iframes */
+        .chart-container {
+            position: relative;
+        }
+
+        .chart-container::before {
+            content: '⏳ Loading...';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            z-index: 0;
+        }
+
+        .chart-frame {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="poster">
+        <!-- Header - Full Width -->
+        <div class="header">
+            <h1>🎯 Mapping the EA Community</h1>
+            <p class="subtitle">Semantic Analysis & Network Recommendations for Conference Attendees</p>
+            <span class="badge">EAGx Amsterdam 2025 · Analysis of 650 Attendees</span>
+            <div class="author">
+                <div class="author-name">Orlando Timmerman</div>
+                <div class="author-email"><a href="mailto:rt582@cam.ac.uk">rt582@cam.ac.uk</a></div>
+            </div>
+        </div>
+
+        <!-- Left Sidebar -->
+        <div class="left-sidebar">
+            <div class="card sidebar-card">
+                <h2>📋 About This Project</h2>
+                <p>
+                    This analysis maps the <strong>expertise, interests, and geographic connections</strong> 
+                    of attendees to the EAGx Amsterdam conference using a combination of NLP and LLM-based 
+                    entity extraction.
+                </p>
+                <p style="margin-top: 10px;">
+                    <strong>The goal:</strong> to both visualise the main focus of the conference attendees as a representation of the wider EA community; and to create a recommendation system to help attendees find <strong>collaborators, mentors, and unexpected connections</strong> based on semantic similarity of their profiles.
+                </p>
+                <p style="margin-top: 10px;">
+                    The latter functionality is available in the associated GitHub repository, while this poster focuses on the data analysis and visualisation.
+                </p>
+                <p style="margin-top: 10px;">
+                    If you have any questions, feedback, or suggestions, please feel free to get in touch via the contact details in the footer. I'll also be dialling in some time this afternoon, so feel free to pay me a visit.
+                </p>
+            </div>
+
+            <div class="card sidebar-card">
+                <h2>⚙️ Analysis Pipeline</h2>
+                <div class="pipeline-diagram">
+                    <div class="pipeline-step">
+                        <div class="step-icon data">📊</div>
+                        <div class="step-content">
+                            <h4><center>Data Ingestion</center></h4>
+                            <p style="text-align: center;">Load & clean attendee profiles</p>
+                        </div>
+                    </div>
+                    <div class="step-arrow">↓</div>
+                    <div class="pipeline-step">
+                        <div class="step-icon extract">🔍</div>
+                        <div class="step-content">
+                            <h4><center>Entity Extraction</center></h4>
+                            <p style="text-align: center;">NLP + LLM with majority voting</p>
+                        </div>
+                    </div>
+                    <div class="step-arrow">↓</div>
+                    <div class="pipeline-step">
+                        <div class="step-icon analyze">🧠</div>
+                        <div class="step-content">
+                            <h4><center>Semantic Clustering</center></h4>
+                            <p style="text-align: center;">Embed & cluster cause areas</p>
+                        </div>
+                    </div>
+                    <div class="step-arrow">↓</div>
+                    <div class="pipeline-step">
+                        <div class="step-icon viz">📈</div>
+                        <div class="step-content">
+                            <h4><center>Visualization</center></h4>
+                            <p style="text-align: center;">Interactive charts & network visualization</p>
+                        </div>
+                    </div>
+                    <div class="step-arrow">↓</div>
+                    <div class="pipeline-step">
+                        <div class="step-icon recommend">🤝</div>
+                        <div class="step-content">
+                            <h4><center>Recommendations</center></h4>
+                            <p style="text-align: center;">Find connections & collaborators</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card sidebar-card">
+                <h2>🔗 Explore the Code</h2>
+                <div class="qr-container">
+                    <div class="qr-placeholder">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://github.com/orlando-code/ea-stakeholder-mapping" alt="QR Code to Repository">
+                    </div>
+                    <p class="qr-label">
+                        Scan to view the<br>
+                        <strong>GitHub Repository</strong><br>
+                        <span style="font-size: 0.75rem;">github.com/orlando-code/<br>ea-stakeholder-mapping</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Center Charts Grid -->
+        <div class="center-charts">
+            <div class="card chart-card">
+                <h2>📊 Top Cause Areas</h2>
+                <p>Most frequently mentioned topics across all attendee profile, extracted from a combination of NLP and LLM. The profile represents attendees referring to their own areas of experience as well as their interests.</p>
+                <div class="chart-container">
+                    <iframe class="chart-frame" src="cause_area_chart.html"></iframe>
+                </div>
+            </div>
+
+            <div class="card chart-card">
+                <h2>🕸️ Semantic Network</h2>
+                <p>Cause areas clustered by semantic similarity. Nodes are coloured by EA cause area and sized proportional to how often they are mentioned. Take a look at what's grouped close to your favourite cause area: if you haven't explored it, why not?</p>
+                <div class="chart-container">
+                    <iframe class="chart-frame tall" src="semantic_network.html"></iframe>
+                </div>
+            </div>
+
+            <div class="card chart-card">
+                <h2>🗺️ Geographic Distribution</h2>
+                <p>Countries and organizations mentioned by attendees. Note the strong geographical bias due to location of conference. Seems there's still a footprint of EA having had a lot of adoption in the US! Or perhaps it's commenting on the current state of affairs over there...</p>
+                <div class="chart-container">
+                    <iframe class="chart-frame" src="map.html"></iframe>
+                </div>
+            </div>
+
+            <div class="card chart-card">
+                <h2>🧑‍🔬 Expertise vs Interests</h2>
+                <p>What people know vs. what they want to learn, extracted directly from the pre-set keywords. Lots of people interested in academia (and apparently enjoy it!) but AI strategy is getting popular...</p>
+                <div class="chart-container">
+                    <iframe class="chart-frame short" src="expertise_vs_interest_chart.html"></iframe>
+                </div>
+            </div>
+
+            <div class="card chart-card">
+                <h2>💡 Undervalued Areas</h2>
+                <p>High interest but low expertise — opportunity gaps! Note that just because there is a gap, it doesn't mean it's a great thing to look into. The general interest level is indicated by the number of mentions detailed to the right of each bar.</p>
+                <div class="chart-container">
+                    <iframe class="chart-frame short" src="undervalued_chart.html"></iframe>
+                </div>
+            </div>
+
+            <div class="card chart-card">
+                <h2>🤖 NLP vs LLM Extraction</h2>
+                <p>Comparing extraction methods. Pretty shocking overlap here! The NLP over-estimates cause areas since it pretty much picks out every proper noun it can find. I'm more unsure as to why you get opposite profiles between the locations and organisations bars. Any ideas?</p>
+                <div class="chart-container">
+                    <iframe class="chart-frame short" src="extraction_comparison_chart.html"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="right-sidebar">
+            <div class="card sidebar-card">
+                <h2>🛠️ Methodology</h2>
+                <p>Two complementary extraction approaches were used and compared:</p>
+                <div class="method-comparison">
+                    <div class="method-box nlp">
+                        <h4>🔠 NLP (spaCy)</h4>
+                        <p>Fast, deterministic entity recognition using named entity recognition and keyword matching.</p>
+                    </div>
+                    <div class="method-box llm">
+                        <h4>🧠 LLM (Llama 3.2)</h4>
+                        <p>Local Ollama model with 3-run majority voting to handle stochasticity and filter hallucinations.</p>
+                    </div>
+                </div>
+                <p style="margin-top: 12px; font-size: 0.85rem;">
+                    Semantic clustering uses <strong>sentence-transformers</strong> embeddings with 
+                    predefined EA cause categories for interpretable groupings.
+                </p>
+            </div>
+
+            <div class="card sidebar-card">
+                <h2>🔑 Key Findings</h2>
+                <p class="finding-intro" style="font-size: 0.96em; color: var(--text-muted); margin-bottom: 14px;">
+                    <em>
+                        These results attain to a single conference and were analysed by a stochastic parrot. They may not be entirely accurate and are likely to strongly reflect the nature of this specific conference rather than the wider EA community. Please take them with a beaker of salt.
+                
+                    </em>
+                </p>
+
+
+                <div class="finding-item">
+                    <span class="finding-number">1</span>
+                    <span class="finding-text">
+                        <strong>Global health is tailed by AI safety</strong> — once people stop talking about themselves (the organisational group), they are first concerned with global health, then AI safety. Note that AI is split between several areas, so as a wider area it's by far the largest. Surprise surprise.
+                    </span>
+                </div>
+                <div class="finding-item">
+                    <span class="finding-number">2</span>
+                    <span class="finding-text">
+                        <strong>Europe-centric network, US-focused associations?</strong> — strong clustering in the UK, Netherlands, and France, as is only to be expected given the location of the conference. Little representation from the Global South.
+                    </span>
+                </div>
+                <div class="finding-item">
+                    <span class="finding-number">3</span>
+                    <span class="finding-text">
+                        <strong>Expertise gaps identified</strong> — areas like policy implementation and community building show high interest but lower expertise availability. And let's not even get started on 'Space Governance'... Interestingly, there appears to be both high interest and expertise in 'Academic Research'. 
+                    </span>
+                </div>
+                <div class="finding-item">
+                    <span class="finding-number">4</span>
+                    <span class="finding-text">
+                        <strong>LLM extraction outperforms NLP</strong> for cause area detection, though NLP remains faster for location/organization extraction. I haven't formally quantified the accuracy of the two (only the overlap) but NLP generally extracts very generic and single words rather than reading between the lines to place them within wider cause areas.
+                    </span>
+                </div>
+            </div>
+            <div class="card sidebar-card">
+                <h2>🔭 Next steps</h2>
+                <p class="finding-intro" style="font-size: 0.96em; color: var(--text-muted); margin-bottom: 14px;">
+                    <em>
+                        Plenty more to do! I don't have the time, but if anyone is interested, get in touch or just fork the repo – see the footer.                
+                    </em>
+                </p>
+                <div class="finding-item">
+                    <span class="finding-number">4</span>
+                    <span class="finding-text">
+                        Formally verify the accuracy of LLM-extracted keywords by manually checking against original data (e.g. for a sample of paragraphs).
+                    </span>
+                </div>
+                <div class="finding-item">
+                    <span class="finding-number">5</span>
+                    <span class="finding-text">
+                        Analysing the databases from past/future conferences to look for (statistically-significant) shifts in interests, expertise, and general focus areas
+                    </span>
+                </div>
+                <div class="finding-item">
+                    <span class="finding-number">6</span>
+                    <span class="finding-text">
+                        Ask more specific questions: to what extent is EA conference attendance dominated by people interested in AI? How is this changing with time? Are people predominantly interested in near-term or long-term causes?
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <strong>EA Cambridge Project Fellowship 2025-26</strong> · 
+            Created by Orlando Timmerman · 
+            <a href="https://github.com/orlando-code/ea-stakeholder-mapping" target="_blank">View on GitHub</a> · 
+            <em>Open source & fork-able</em>
+        </div>
+    </div>
+
+    <script>
+        // Handle iframe resizing and scaling
+        function resizeIframe(iframe) {
+            try {
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                const plotlyDiv = iframeDoc.querySelector('.plotly');
+                
+                if (plotlyDiv && window.Plotly) {
+                    // Trigger Plotly resize
+                    window.Plotly.Plots.resize(plotlyDiv);
+                } else if (iframe.contentWindow.Plotly && plotlyDiv) {
+                    // If Plotly is in iframe's window
+                    iframe.contentWindow.Plotly.Plots.resize(plotlyDiv);
+                }
+            } catch (e) {
+                // Cross-origin or other error - use CSS scaling as fallback
+                console.log('Could not resize iframe content:', e);
+            }
+        }
+
+        // Resize all iframes when loaded
+        document.querySelectorAll('.chart-frame').forEach(iframe => {
+            iframe.addEventListener('load', function() {
+                // Fade in
+                this.style.opacity = '0';
+                this.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => {
+                    this.style.opacity = '1';
+                }, 100);
+                
+                // Resize after a short delay to ensure content is loaded
+                setTimeout(() => {
+                    resizeIframe(this);
+                }, 500);
+            });
+        });
+
+        // Resize on window resize
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                document.querySelectorAll('.chart-frame').forEach(iframe => {
+                    resizeIframe(iframe);
+                });
+            }, 250);
+        });
+
+        // Initial resize after page load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelectorAll('.chart-frame').forEach(iframe => {
+                    resizeIframe(iframe);
+                });
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

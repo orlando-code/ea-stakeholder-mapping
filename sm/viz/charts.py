@@ -18,6 +18,7 @@ def create_cause_area_bar_chart(
     top_n: int = 25,
     title: str = "Most Mentioned Cause Areas",
     color: str = "#2E86AB",
+    showtitle: bool = True,
 ) -> go.Figure:
     """Create horizontal bar chart of cause area mentions.
 
@@ -51,10 +52,10 @@ def create_cause_area_bar_chart(
     )
 
     fig.update_layout(
-        title=dict(text=title, x=0.5),
+        title=dict(text=title, x=0.5) if showtitle else "",
         xaxis_title="Number of Mentions",
         yaxis_title="",
-        height=max(400, top_n * 25),
+        height=max(800, top_n * 25),
         margin=dict(l=250, r=50, t=50, b=50),
         showlegend=False,
     )
@@ -65,6 +66,7 @@ def create_cause_area_bar_chart(
 def create_extraction_comparison_chart(
     comparison_df: pd.DataFrame,
     title: str = "NLP vs LLM Extraction Comparison",
+    showtitle: bool = True,
 ) -> go.Figure:
     """Create chart comparing NLP and LLM extraction totals.
 
@@ -106,11 +108,11 @@ def create_extraction_comparison_chart(
     )
 
     fig.update_layout(
-        title=dict(text=title, x=0.5),
+        title=dict(text=title, x=0.5) if showtitle else "",
         barmode="group",
         xaxis_title="Category",
         yaxis_title="Total Extractions",
-        height=400,
+        height=800,
         legend=dict(x=0.7, y=0.95),
     )
 
@@ -228,8 +230,7 @@ def _create_mentions_df(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def create_expertise_vs_interest_chart(
-    df: pd.DataFrame,
-    top_n: int = 20,
+    df: pd.DataFrame, top_n: int = 20, showtitle: bool = True
 ) -> go.Figure:
     """Create comparison of expertise vs interest areas.
 
@@ -269,7 +270,7 @@ def create_expertise_vs_interest_chart(
     )
 
     fig.update_layout(
-        title="Expertise vs Interest Areas",
+        title="Expertise vs Interest Areas" if showtitle else "",
         barmode="group",
         height=max(400, top_n * 30),
         xaxis_title="Count",
@@ -281,8 +282,7 @@ def create_expertise_vs_interest_chart(
 
 
 def create_undervalued_chart(
-    df: pd.DataFrame,
-    top_n: int = 20,
+    df: pd.DataFrame, top_n: int = 20, showtitle: bool = False
 ) -> go.Figure:
     """Create chart of undervalued areas (high interest, low expertise).
 
@@ -370,7 +370,9 @@ def create_undervalued_chart(
 
     fig.update_layout(
         title=dict(
-            text="Undervalued Areas (Interest/Expertise Ratio > 1)<br><span style='font-size:14px;font-weight:normal'>Numbers printed on the bars are the total number of mentions (between expertise and interest)</span>",
+            text="Undervalued Areas (Interest/Expertise Ratio > 1)<br><span style='font-size:14px;font-weight:normal'>Numbers printed on the bars are the total number of mentions (between expertise and interest)</span>"
+            if showtitle
+            else "<span style='font-size:14px;font-weight:normal'>Numbers printed on the bars are the total number of mentions (between expertise and interest)</span>",
             x=0.5,
             xanchor="center",
         ),
