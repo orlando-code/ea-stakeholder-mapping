@@ -26,6 +26,8 @@ This repo fulfils the project component of an EA Project Fellowship with EA Camb
 
 # Results
 
+To see an interactive poster presenting the main results (including most of the graphs below), [click here](https://orlando-code.github.io/ea-stakeholder-mapping/output/poster.html)!
+
 The following interactive graphs are the headline results of the codebase.
 
 *What are the most-mentioned cause areas?* 
